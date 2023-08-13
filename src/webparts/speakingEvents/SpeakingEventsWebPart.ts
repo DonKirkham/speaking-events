@@ -9,8 +9,7 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'SpeakingEventsWebPartStrings';
-import SpeakingEvents from './components/SpeakingEvents';
-import { ISpeakingEventsProps } from './components/ISpeakingEventsProps';
+import SpeakingEvents, { ISpeakingEventsProps } from './components/SpeakingEvents';
 
 export interface ISpeakingEventsWebPartProps {
   description: string;
