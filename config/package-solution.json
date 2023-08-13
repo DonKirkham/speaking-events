@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "speaking-events-client-side-solution",
+    "id": "ddb4b632-6620-48b2-b9bf-47bc79bacbe3",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.17.4"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "SpeakingEvents description"
+      },
+      "longDescription": {
+        "default": "SpeakingEvents description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "speaking-events Feature",
+        "description": "The feature that activates elements of the speaking-events solution.",
+        "id": "56e89ff1-1d46-436e-9767-1bfe5af760f5",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/speaking-events.sppkg"
+  }
+}

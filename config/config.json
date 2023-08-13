@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "speaking-events-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/speakingEvents/SpeakingEventsWebPart.js",
+          "manifest": "./src/webparts/speakingEvents/SpeakingEventsWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "SpeakingEventsWebPartStrings": "lib/webparts/speakingEvents/loc/{locale}.js"
+  }
+}
