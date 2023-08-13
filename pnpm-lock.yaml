@@ -26,6 +26,9 @@ dependencies:
   '@microsoft/sp-webpart-base':
     specifier: 1.17.4
     version: 1.17.4(@microsoft/microsoft-graph-client@1.7.2-spfx)(@types/react-dom@17.0.17)(@types/react@17.0.45)
+  '@pnp/sp':
+    specifier: ^3.17.0
+    version: 3.17.0
   office-ui-fabric-react:
     specifier: ^7.199.1
     version: 7.199.1(@types/react-dom@17.0.17)(@types/react@17.0.45)(react-dom@17.0.1)(react@17.0.1)
@@ -2176,6 +2179,31 @@ packages:
       webpack: 4.44.2(webpack-cli@4.6.0)
       webpack-dev-server: 3.11.2(webpack-cli@4.6.0)(webpack@4.44.2)
     dev: true
+
+  /@pnp/core@3.17.0:
+    resolution: {integrity: sha512-h+nu1eHEQ0VpiRcLDQjPyVJHnrHruFJ/v8ZsSbJx1Vg2EoP/X5wDaZNXSjEmF3Xy3yD9aURDkdMw7eVb7PMfEw==}
+    engines: {node: '>=14.15.1'}
+    dependencies:
+      tslib: 2.4.1
+    dev: false
+
+  /@pnp/queryable@3.17.0:
+    resolution: {integrity: sha512-kF2fi1pRZr70jGi9qrlA7wLi9Eh1AS+szPGT8C665cko18pahY8OLd8ra8d08Cw8TTuNG/AvJ6Z4BU1I3kSWYg==}
+    engines: {node: '>=14.15.1'}
+    dependencies:
+      '@pnp/core': 3.17.0
+      tslib: 2.4.1
+    dev: false
+
+  /@pnp/sp@3.17.0:
+    resolution: {integrity: sha512-PTeLI+D5oddALX+Xogs9PzcebfSXdidS0QU8Ral7HU8797lFSzlMx3FTG+nAPHTLerTHsUvAAtkmCw1rI6MBXQ==}
+    engines: {node: '>=14.15.1'}
+    requiresBuild: true
+    dependencies:
+      '@pnp/core': 3.17.0
+      '@pnp/queryable': 3.17.0
+      tslib: 2.4.1
+    dev: false
 
   /@pnpm/crypto.base32-hash@1.0.1:
     resolution: {integrity: sha512-pzAXNn6KxTA3kbcI3iEnYs4vtH51XEVqmK/1EiD18MaPKylhqy8UvMJK3zKG+jeP82cqQbozcTGm4yOQ8i3vNw==}
@@ -14893,6 +14921,10 @@ packages:
 
   /tslib@2.3.1:
     resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
+
+  /tslib@2.4.1:
+    resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
+    dev: false
 
   /tslib@2.6.1:
     resolution: {integrity: sha512-t0hLfiEKfMUoqhG+U1oid7Pva4bbDPHYfJNiB7BiIjRkj1pyC++4N3huJfqY6aRH6VTB0rvtzQwjM4K6qpfOig==}

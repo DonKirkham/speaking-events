@@ -3,7 +3,13 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './SpeakingEvents.module.scss';
 import { escape, set } from '@microsoft/sp-lodash-subset';
-import { getDateRangeArray } from 'office-ui-fabric-react';
+import { ISpeakingEvents } from '../../../models/SpeakingEvents';
+import { WebPartContext } from '@microsoft/sp-webpart-base';
+import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
+import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 
 //globals
 
@@ -13,6 +19,7 @@ export interface ISpeakingEventsProps {
   environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
+  context: WebPartContext
 }
 
 export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
@@ -26,18 +33,45 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
 
   const [counter, setCounter] = useState<number>(0);
   const [oddEven, setOddEven] = useState<string>('');
-  //const [events, setEvents] = useState<SpeakingEvents[]>([]);
+  const [events, setEvents] = useState<ISpeakingEvents[]>([]);
 
-  const getData = () => {
+  const getRestData = async () => {
     console.log("getData() called");
-    setCounter(counter + 100);
+    const _url = "https://pdslabs2.sharepoint.com/_api/web/lists/getbytitle('Speaking%20Events')/items?$select=Title,Session,SessionDate";
+    const _spHttpClient = props.context.spHttpClient;
+    const _eventsSP: SPHttpClientResponse = await _spHttpClient.get(_url, SPHttpClient.configurations.v1);
+    const _eventsJson = await _eventsSP.json();
+    const _events = _eventsJson.value.map((event: any) => {
+      return {
+        EventName: event.Title,
+        Session: event.Session,
+        SessionDate: new Date(event.SessionDate)
+      } as ISpeakingEvents;
+    });
+    setEvents(_events);
+  }
+
+  const getPnpData = async () => {
+    console.log("getPnpData() called");
+    const _url = "https://pdslabs2.sharepoint.com";
+    const sp = spfi(_url).using(SPFx(props.context));
+    const _eventsSP = await sp.web.lists.getByTitle("Speaking Events").items.select("Title,Session,SessionDate")();
+    const _events = _eventsSP.map((event: any) => {
+      return {
+        EventName: event.Title,
+        Session: event.Session,
+        SessionDate: new Date(event.SessionDate)
+      } as ISpeakingEvents;
+    });
+    setEvents(_events);
   }
 
   useEffect(() => {
     console.log("useEffect([]) called");
-    const timer = setTimeout(() => {
-      getData();
-    }, 2000);
+    const timer = setTimeout(async() => {
+      await getRestData();
+      await getPnpData();
+    }, 0);
     return () => clearTimeout(timer);
   }, []);
 
@@ -56,17 +90,18 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     <section className={`${styles.speakingEvents} ${hasTeamsContext ? styles.teams : ''}`}>
       <div className={styles.welcome}>
         <h3>Welcome to SharePoint Framework!</h3>
-        {counter == 0 ?
+        <p>Counter: <strong>{counter}</strong></p>
+        <p>Counter is <strong>{oddEven}</strong></p>
+        <p><button onClick={() => onCounterButtonClicked()}>Click Me!!</button></p>
+        {events.length == 0 ?
           <p>Loading Data . . .</p>
           :
-          <>
-            <p>Counter: <strong>{counter}</strong></p>
-            <p>Counter is <strong>{oddEven}</strong></p>
-            <p><button onClick={() => onCounterButtonClicked()}>Click Me!!</button></p>
-          </>
+          <ul className={styles.links}>
+            {events.map((event, index) => {
+              return <li key={index}>{event.EventName} - {event.Session} - {event.SessionDate?.toLocaleDateString()}</li>;
+            })}
+          </ul>
         }
-        <ul className={styles.links}>
-        </ul>
       </div>
     </section>
   );
