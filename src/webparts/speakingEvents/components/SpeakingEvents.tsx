@@ -2,7 +2,8 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './SpeakingEvents.module.scss';
-import { escape } from '@microsoft/sp-lodash-subset';
+import { escape, set } from '@microsoft/sp-lodash-subset';
+import { getDateRangeArray } from 'office-ui-fabric-react';
 
 //globals
 
@@ -25,9 +26,19 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
 
   const [counter, setCounter] = useState<number>(0);
   const [oddEven, setOddEven] = useState<string>('');
+  //const [events, setEvents] = useState<SpeakingEvents[]>([]);
+
+  const getData = () => {
+    console.log("getData() called");
+    setCounter(counter + 100);
+  }
 
   useEffect(() => {
     console.log("useEffect([]) called");
+    const timer = setTimeout(() => {
+      getData();
+    }, 2000);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -39,15 +50,21 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     console.log("onCounterButtonClicked() called");
     setCounter(counter + 1);
   }
-  
+
   console.log("Render() called");
   return (
     <section className={`${styles.speakingEvents} ${hasTeamsContext ? styles.teams : ''}`}>
       <div className={styles.welcome}>
         <h3>Welcome to SharePoint Framework!</h3>
-        <p>Counter: <strong>{counter}</strong></p>
-        <p>Counter is <strong>{oddEven}</strong></p>
-        <p><button onClick={() => onCounterButtonClicked()}>Click Me!!</button></p>
+        {counter == 0 ?
+          <p>Loading Data . . .</p>
+          :
+          <>
+            <p>Counter: <strong>{counter}</strong></p>
+            <p>Counter is <strong>{oddEven}</strong></p>
+            <p><button onClick={() => onCounterButtonClicked()}>Click Me!!</button></p>
+          </>
+        }
         <ul className={styles.links}>
         </ul>
       </div>
