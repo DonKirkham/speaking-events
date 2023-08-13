@@ -25,7 +25,7 @@ export default class SpeakingEvents extends React.Component<ISpeakingEventsProps
 
     return (
       <section className={`${styles.speakingEvents} ${hasTeamsContext ? styles.teams : ''}`}>
-        <div>
+        <div className={styles.welcome}>
           <h3>Welcome to SharePoint Framework!</h3>
           <ul className={styles.links}>
           </ul>
