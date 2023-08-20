@@ -37,7 +37,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     const timer = setTimeout(() => {
       setCounter(counter + 1);
     }, 3000);
-    // return () => clearTimeout(timer);
+    return () => clearTimeout(timer);
   }
   useEffect(() => {
     console.log("useEffect([]) called");
