@@ -34,14 +34,14 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   const [oddEven, setOddEven] = useState<string>('');
 
   const getData = () => {
-    const timer = setTimeout(() => {
-      setCounter(counter + 1);
-    }, 3000);
-    return () => clearTimeout(timer);
+    setCounter(counter + 1);
   }
   useEffect(() => {
     console.log("useEffect([]) called");
-    getData();
+    const timer = setTimeout(() => {
+      getData();
+    }, 3000);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
