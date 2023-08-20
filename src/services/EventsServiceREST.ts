@@ -2,15 +2,16 @@
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { ISpeakingEvent } from '../models/ISpeakingEvent';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
+import { IEventService } from './IEventService';
 
-export class EventsServiceREST {
+export class EventServiceREST  {
   private _spHttpClient: SPHttpClient;
   private _siteUrl: string;
   private _listName: string;
 
-  constructor(context: WebPartContext, siteUrl: string, listName: string,) {
+  constructor(context: WebPartContext, siteUrl: string, listName: string) {
     console.log("EventsServiceREST.constructor() called", { context, siteUrl, listName });
-    this._spHttpClient = context.spHttpClient;
+    this._spHttpClient = context?.spHttpClient;
     this._siteUrl = siteUrl;
     this._listName = listName;
   }
@@ -65,6 +66,5 @@ export class EventsServiceREST {
       });
     return _result;
   }
-
 
 }

@@ -10,6 +10,7 @@ import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'SpeakingEventsWebPartStrings';
 import SpeakingEvents, { ISpeakingEventsProps } from './components/SpeakingEvents';
+import { getEventService } from '../../services/getEventService';
 
 export interface ISpeakingEventsWebPartProps {
   description: string;
@@ -36,10 +37,14 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
     ReactDom.render(element, this.domElement);
   }
 
-  protected onInit(): Promise<void> {
-    return this._getEnvironmentMessage().then(message => {
-      this._environmentMessage = message;
-    });
+  protected async onInit(): Promise<void> {
+    await super.onInit();
+    this._environmentMessage = await this._getEnvironmentMessage();
+    getEventService({ source: "PnP", context: this.context, siteUrl: "https://pdslabs2.sharepoint.com", listName: "Speaking Events" });
+
+    // return this._getEnvironmentMessage().then(message => {
+    //   this._environmentMessage = message;
+    // });
   }
 
 

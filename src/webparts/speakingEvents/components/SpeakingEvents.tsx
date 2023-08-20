@@ -6,8 +6,9 @@ import { escape, set } from '@microsoft/sp-lodash-subset';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { ISpeakingEvent as ISpeakingEvent } from '../../../models/ISpeakingEvent';
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
-import { EventsServiceREST } from '../../../services/EventsServiceREST';
-import { EventsServicePnP } from '../../../services/EventsServicePnP';
+import { EventServiceREST } from '../../../services/EventsServiceREST';
+import { EventServicePnP } from '../../../services/EventsServicePnP';
+import { getEventService } from '../../../services/getEventService';
 
 //globals
 
@@ -31,7 +32,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   } = props;
 
   //const dataService = new EventsServiceREST(context, "https://pdslabs2.sharepoint.com", "Speaking%20Events");
-  const dataService = new EventsServicePnP(context, "https://pdslabs2.sharepoint.com", "Speaking Events");
+  const dataService = new EventServicePnP(context, "https://pdslabs2.sharepoint.com", "Speaking Events");
 
 
   const [counter, setCounter] = useState<number>(0);
@@ -41,7 +42,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
 
   const getData = async (): Promise<ISpeakingEvent[]> => {
     console.log("getData() called");
-    return await dataService.getData();
+    return await getEventService().getData();
   }
 
   useEffect(() => {

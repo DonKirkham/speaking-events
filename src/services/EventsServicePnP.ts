@@ -7,17 +7,16 @@ import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import { IEventService } from './IEventService';
 
 
-export class EventsServicePnP {
+export class EventServicePnP implements IEventService {
   private _sp: any;
-  private _siteUrl: string;
   private _listName: string;
 
-  constructor(context: WebPartContext, siteUrl: string, listName: string,) {
+  constructor(context: WebPartContext, siteUrl: string, listName: string) {
     console.log("EventsServicePnP.constructor() called", { context, siteUrl, listName });
     this._sp = spfi(`${siteUrl}`).using(SPFx(context));
-    //this._siteUrl = siteUrl;
     this._listName = listName;
   }
 
@@ -48,7 +47,5 @@ export class EventsServicePnP {
     );
     return _result;
   }
-
-
 
 }
