@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './SpeakingEvents.module.scss';
-import { escape, set } from '@microsoft/sp-lodash-subset';
+import { escape, set  } from '@microsoft/sp-lodash-subset';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { ISpeakingEvent as ISpeakingEvent } from '../../../models/ISpeakingEvent';
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
@@ -68,7 +68,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     const _currentDate = new Date();
     const _newEvent: ISpeakingEvent = {
       EventName: "New secret event",
-      Session: "Super secret REST session",
+      Session: "Super secret session",
       SessionDate: new Date(2023, 11, 1, _currentDate.getHours(), _currentDate.getMinutes(), _currentDate.getSeconds())
     }
     await dataService.addEvent(_newEvent);
@@ -80,7 +80,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     const _currentDate = new Date();
     const _newEvent: ISpeakingEvent = {
       EventName: "New secret event",
-      Session: "Super secret PnPJs session",
+      Session: "Super secret session",
       SessionDate: new Date(2023, 11, 1, _currentDate.getHours(), _currentDate.getMinutes(), _currentDate.getSeconds())
     }
     await dataService.addEvent(_newEvent);
