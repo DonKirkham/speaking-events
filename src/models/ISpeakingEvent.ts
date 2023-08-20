@@ -1,4 +1,4 @@
-export interface ISpeakingEvents {
+export interface ISpeakingEvent {
   id?: string;
   EventName?: string;
   Session?: string;
