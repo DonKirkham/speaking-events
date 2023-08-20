@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
@@ -40,11 +41,7 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
   protected async onInit(): Promise<void> {
     await super.onInit();
     this._environmentMessage = await this._getEnvironmentMessage();
-    getEventService({ source: "PnP", context: this.context, siteUrl: "https://pdslabs2.sharepoint.com", listName: "Speaking Events" });
-
-    // return this._getEnvironmentMessage().then(message => {
-    //   this._environmentMessage = message;
-    // });
+    getEventService({ source: "REST", context: this.context, siteUrl: "https://pdslabs2.sharepoint.com", listName: "Speaking Events" });
   }
 
 

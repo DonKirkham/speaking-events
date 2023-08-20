@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { IEventService } from './IEventService';
 import { EventServiceREST } from './EventsServiceREST';

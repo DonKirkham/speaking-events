@@ -58,7 +58,7 @@ export class EventServiceREST  {
       {
         body: JSON.stringify({
           Title: newEvent.EventName,
-          Session: newEvent.Session,
+          Session: newEvent.Session+"(REST)",
           SessionDate: newEvent.SessionDate?.toISOString(),
           SessionType: "60 minute session",
           '@odata.type': _itemEntityType

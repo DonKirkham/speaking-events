@@ -40,7 +40,7 @@ export class EventServicePnP implements IEventService {
     const _result = this._sp.web.lists.getByTitle("Speaking Events").items.add(
       {
         Title: newEvent.EventName,
-        Session: newEvent.Session,
+        Session: newEvent.Session + "(PnPJs)",
         SessionDate: newEvent.SessionDate?.toISOString(),
         SessionType: "60 minute session"
       }
