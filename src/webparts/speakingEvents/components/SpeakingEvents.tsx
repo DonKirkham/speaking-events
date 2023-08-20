@@ -33,8 +33,15 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   const [counter, setCounter] = useState<number>(0);
   const [oddEven, setOddEven] = useState<string>('');
 
+  const getData = () => {
+    const timer = setTimeout(() => {
+      setCounter(counter + 1);
+    }, 3000);
+    // return () => clearTimeout(timer);
+  }
   useEffect(() => {
     console.log("useEffect([]) called");
+    getData();
   }, []);
 
   useEffect(() => {
@@ -55,6 +62,11 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
         <p>Counter: <strong>{counter}</strong></p>
         <p>Counter is <strong>{oddEven}</strong></p>
         <p><button onClick={() => onCounterButtonClicked()}>Click Me!!</button></p>
+        {counter == 0 ?
+          <p>Loading Data . . .</p>
+          :
+          <p>Data Loaded!!!</p>
+        }
       </div>
     </section>
   );
