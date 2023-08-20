@@ -4,11 +4,6 @@ import { useState, useEffect } from 'react';
 import styles from './SpeakingEvents.module.scss';
 import { escape, set } from '@microsoft/sp-lodash-subset';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
-import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
-import { spfi, SPFx } from "@pnp/sp";
-import "@pnp/sp/webs";
-import "@pnp/sp/lists";
-import "@pnp/sp/items";
 
 //globals
 
