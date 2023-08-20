@@ -34,8 +34,10 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   const [oddEven, setOddEven] = useState<string>('');
 
   const getData = () => {
+    console.log("getData() called");
     setCounter(counter + 1);
   }
+
   useEffect(() => {
     console.log("useEffect([]) called");
     const timer = setTimeout(() => {
@@ -58,14 +60,17 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   return (
     <section className={`${styles.speakingEvents} ${hasTeamsContext ? styles.teams : ''}`}>
       <div className={styles.welcome}>
-        <h3>Welcome to SharePoint Framework!</h3>
-        <p>Counter: <strong>{counter}</strong></p>
-        <p>Counter is <strong>{oddEven}</strong></p>
-        <p><button onClick={() => onCounterButtonClicked()}>Click Me!!</button></p>
         {counter == 0 ?
           <p>Loading Data . . .</p>
           :
-          <p>Data Loaded!!!</p>
+          <>
+            <h3>Welcome to SharePoint Framework!</h3>
+            <p>Counter: <strong>{counter}</strong></p>
+            <p>Counter is <strong>{oddEven}</strong></p>
+            <p><button onClick={() => onCounterButtonClicked()}>Click Me!!</button></p>
+            <hr />
+            <p>Data Loaded!!!</p>
+          </>
         }
       </div>
     </section>
