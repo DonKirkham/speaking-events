@@ -9,6 +9,9 @@ import { ISpeakingEvent as ISpeakingEvent } from '../../../models/ISpeakingEvent
 //import { EventServiceREST } from '../../../services/EventsServiceREST';
 //import { EventServicePnP } from '../../../services/EventsServicePnP';
 import { getEventService } from '../../../services/getEventService';
+import { IEventService } from '../../../services/IEventService';
+import { get, set } from '@microsoft/sp-lodash-subset';
+import { ISpeakingEventsWebPartProps } from '../SpeakingEventsWebPart';
 
 //globals
 
@@ -18,8 +21,10 @@ export interface ISpeakingEventsProps {
   environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
-  context: WebPartContext
-  maxEvents: number;
+  context: WebPartContext;
+  dataService: IEventService;
+  properties: ISpeakingEventsWebPartProps
+  //maxEvents: number;
 }
 
 export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
@@ -35,23 +40,43 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   const [counter, setCounter] = useState<number>(0);
   const [oddEven, setOddEven] = useState<string>('');
   const [events, setEvents] = useState<ISpeakingEvent[]>([]);
+  const [properties, setProperties] = useState<ISpeakingEventsWebPartProps>();
 
 
   const getData = async (): Promise<ISpeakingEvent[]> => {
     console.log("getData() called");
-    if (getEventService() === undefined) {
+    const dataService = getEventService();
+    if (dataService === undefined) {
       return [];
     }
-    return await getEventService().GetEvents();
+    let _events: ISpeakingEvent[] = [];
+    const timer = setTimeout(async () => {
+      _events = await dataService.GetEvents(props.properties.eventsToDisplay);
+      setEvents(_events);
+      return _events;
+    }, 0);
+    () => clearTimeout(timer)
+    return _events;
   }
 
   useEffect(() => {
-    console.log("useEffect([]) called");
-    const timer = setTimeout(async () => {
-      setEvents(await getData());
-    }, 0);
-    return () => clearTimeout(timer);
-  }, []);
+    console.log("useEffect() called");
+    if (properties !== props.properties) {
+      setProperties(props.properties);
+    }
+  });
+
+  // useEffect(() => {
+  //   console.log("useEffect([]) called");
+  // }, []);
+
+  useEffect(() => {
+    (async () => {
+      console.log("useEffect([dataService]) called");
+      await getData();
+    })();
+  }, [dataService]);
+
 
   useEffect(() => {
     console.log("useEffect([counter]) called");
@@ -92,25 +117,27 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   return (
     <section className={`${styles.speakingEvents} ${hasTeamsContext ? styles.teams : ''}`}>
       <div className={styles.welcome}>
-        {events.length === 0 ?
-          <p>Loading Data . . .</p>
-          :
-          <>
-            {/* <h3>Welcome to SharePoint Framework!</h3>
+        {!getEventService() ?
+          <p>Service not initialized</p>
+          : events.length === 0 ?
+            <p>Loading Data . . .</p>
+            :
+            <>
+              {/* <h3>Welcome to SharePoint Framework!</h3>
             <p>Counter: <strong>{counter}</strong></p>
             <p>Counter is <strong>{oddEven}</strong></p>
             <p><button onClick={() => onCounterButtonClicked()}>Click Me!!</button></p>
             <hr /> */}
-            <div>
-              <button onClick={() => onAddEventRESTClicked()}>Add REST Event!</button>
-              <button onClick={() => onAddEventPnPClicked()}>Add PnPJs Event!</button>
-            </div>
-            <p style={{ textAlign: "left" }}>
-              {events.map((event: ISpeakingEvent) => {
-                return <div key={event.id}>{event.EventName}: <b>{event.Session}</b>: {event.SessionDate?.toLocaleDateString([], { hour: 'numeric', minute: '2-digit' })} </div>
-              })}
-            </p>
-          </>
+              <div>
+                <button onClick={() => onAddEventRESTClicked()}>Add REST Event!</button>
+                <button onClick={() => onAddEventPnPClicked()}>Add PnPJs Event!</button>
+              </div>
+              <p style={{ textAlign: "left" }}>
+                {events.map((event: ISpeakingEvent) => {
+                  return <div key={event.id}>{event.EventName}: <b>{event.Session}</b>: {event.SessionDate?.toLocaleDateString([], { hour: 'numeric', minute: '2-digit' })} </div>
+                })}
+              </p>
+            </>
         }
       </div>
     </section>
