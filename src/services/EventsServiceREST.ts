@@ -16,8 +16,8 @@ export class EventServiceREST  {
     this._listName = listName;
   }
 
-  public getData = async (): Promise<ISpeakingEvent[]> => {
-    console.log("getData() called");
+  public GetEvents = async (): Promise<ISpeakingEvent[]> => {
+    console.log("GetEvents(REST) called");
     const _url = `${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items?$select=Id,Title,Session,SessionDate&$orderby=SessionDate%20desc`;
     const _requestOptions = {
       headers: {
@@ -50,8 +50,8 @@ export class EventServiceREST  {
       }) as Promise<string>;
   }
 
-  public addEvent = async (newEvent: ISpeakingEvent) => {
-    console.log("addEventREST() called");
+  public AddEvent = async (newEvent: ISpeakingEvent) => {
+    console.log("AddEvent(REST) called", { newEvent });
     const _url: string = `${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items`;
     const _itemEntityType: string = await this._getItemEntityType();
     const _result: SPHttpClientResponse = await this._spHttpClient.post(_url, SPHttpClient.configurations.v1,
@@ -66,5 +66,40 @@ export class EventServiceREST  {
       });
     return _result;
   }
+
+  public UpdateEvent = async (event: ISpeakingEvent): Promise<any> => {
+    console.log("UpdateEvent(REST) called", { event });
+    const _url: string = `${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items(${event.id})`;
+    const _itemEntityType: string = await this._getItemEntityType();
+    const _result: SPHttpClientResponse = await this._spHttpClient.post(_url, SPHttpClient.configurations.v1,
+      {
+        body: JSON.stringify({
+          Title: event.EventName,
+          Session: event.Session,
+          SessionDate: event.SessionDate?.toISOString(),
+          '@odata.type': _itemEntityType,
+          '@odata.etag': '*'
+        }),
+        headers: {
+          'IF-MATCH': '*',
+          'X-HTTP-Method': 'MERGE'
+        }
+      });
+    return _result;
+  }
+
+  public DeleteEvent = async (eventId: string): Promise<any> => {
+    console.log("DeleteEvent(REST) called", { eventId });
+    const _url: string = `${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items(${eventId})`;
+    const _result: SPHttpClientResponse = await this._spHttpClient.post(_url, SPHttpClient.configurations.v1,
+      {
+        headers: {
+          'IF-MATCH': '*',
+          'X-HTTP-Method': 'DELETE'
+        }
+      });
+    return _result;
+  }
+
 
 }

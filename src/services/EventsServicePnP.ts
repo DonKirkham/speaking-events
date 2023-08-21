@@ -20,7 +20,7 @@ export class EventServicePnP implements IEventService {
     this._listName = listName;
   }
 
-  public getData = async (): Promise<ISpeakingEvent[]> => {
+  public GetEvents = async (): Promise<ISpeakingEvent[]> => {
     console.log("getData() called");
     const _eventsSP = await this._sp.web.lists.getByTitle(`${this._listName}`).items.select("Id, Title, Session, SessionDate").orderBy("SessionDate", false)();
     const _events: ISpeakingEvent[] = _eventsSP.map((item: any) => {
@@ -35,7 +35,7 @@ export class EventServicePnP implements IEventService {
     return _events;
   }
 
-  public addEvent = async (newEvent: ISpeakingEvent) => {
+  public AddEvent = async (newEvent: ISpeakingEvent) => {
     console.log("addEvent() called", { newEvent });
     const _result = this._sp.web.lists.getByTitle("Speaking Events").items.add(
       {
@@ -45,6 +45,26 @@ export class EventServicePnP implements IEventService {
         SessionType: "60 minute session"
       }
     );
+    return _result;
+  }
+
+  public UpdateEvent = async (event: ISpeakingEvent): Promise<any> => {
+    console.log("updateEvent() called", { event });
+    const _result = this._sp.web.lists.getByTitle("Speaking Events").items.getById(event.id)
+      .update(
+      {
+        Title: event.EventName,
+        Session: event.Session,
+        SessionDate: event.SessionDate?.toISOString()
+      }
+    );
+    return _result;
+  }
+
+  public DeleteEvent = async (eventId: string): Promise<void> => {
+    console.log("deleteEvent() called", { eventId });
+    const _result = this._sp.web.lists.getByTitle("Speaking Events").items.getById(eventId)
+      .delete();
     return _result;
   }
 

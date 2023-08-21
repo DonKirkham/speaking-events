@@ -2,6 +2,8 @@
 import { ISpeakingEvent } from '../models/ISpeakingEvent';
 
 export interface IEventService {
-  getData(): Promise<ISpeakingEvent[]>;
-  addEvent(newEvent: ISpeakingEvent): Promise<any>;
+  GetEvents(): Promise<ISpeakingEvent[]>;
+  AddEvent(newEvent: ISpeakingEvent): Promise<any>;
+  UpdateEvent(event: ISpeakingEvent): Promise<any>;
+  DeleteEvent(eventId: string): Promise<any>;
 }

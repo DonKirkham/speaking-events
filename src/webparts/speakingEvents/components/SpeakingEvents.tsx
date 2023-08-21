@@ -42,7 +42,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
 
   const getData = async (): Promise<ISpeakingEvent[]> => {
     console.log("getData() called");
-    return await getEventService().getData();
+    return await getEventService().GetEvents();
   }
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
       Session: "Super secret session",
       SessionDate: new Date(2023, 11, 1, _currentDate.getHours(), _currentDate.getMinutes(), _currentDate.getSeconds())
     }
-    await dataService.addEvent(_newEvent);
+    await dataService.AddEvent(_newEvent);
     setEvents(await getData());
   }
 
@@ -83,7 +83,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
       Session: "Super secret session",
       SessionDate: new Date(2023, 11, 1, _currentDate.getHours(), _currentDate.getMinutes(), _currentDate.getSeconds())
     }
-    await dataService.addEvent(_newEvent);
+    await dataService.AddEvent(_newEvent);
     setEvents(await getData());
   }
 
