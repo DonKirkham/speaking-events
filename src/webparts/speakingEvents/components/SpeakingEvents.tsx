@@ -12,6 +12,8 @@ import { getEventService } from '../../../services/getEventService';
 import { IEventService } from '../../../services/IEventService';
 import { get, set } from '@microsoft/sp-lodash-subset';
 import { ISpeakingEventsWebPartProps } from '../SpeakingEventsWebPart';
+import { DisplayMode } from '@microsoft/sp-core-library';
+import { Placeholder } from '@pnp/spfx-controls-react';
 
 //globals
 
@@ -22,9 +24,12 @@ export interface ISpeakingEventsProps {
   hasTeamsContext: boolean;
   userDisplayName: string;
   context: WebPartContext;
+  displayMode: DisplayMode;
+
   //dataService: IEventService;
   properties: ISpeakingEventsWebPartProps
   //maxEvents: number;
+  openPropertyPane: () => void;
 }
 
 export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
@@ -118,7 +123,12 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     <section className={`${styles.speakingEvents} ${hasTeamsContext ? styles.teams : ''}`}>
       <div className={styles.welcome}>
         {!getEventService() ?
-          <p>Service not initialized</p>
+          <Placeholder iconName='Edit'
+            iconText='Configure your web part'
+            description='Please configure the web part.'
+            buttonLabel='Configure'
+            hideButton={props.displayMode === DisplayMode.Read}
+            onConfigure={props.openPropertyPane} />
           : events.length === 0 ?
             <p>Loading Data . . .</p>
             :

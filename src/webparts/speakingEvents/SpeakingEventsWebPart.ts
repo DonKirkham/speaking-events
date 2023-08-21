@@ -37,7 +37,9 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
         userDisplayName: this.context.pageContext.user.displayName,
         context: this.context,
         //dataService: getEventService(),
-        properties: { sites: this.properties.sites, list: this.properties.list, eventsToDisplay:this.properties.eventsToDisplay, serviceSource: this.properties.serviceSource }
+        properties: { sites: this.properties.sites, list: this.properties.list, eventsToDisplay: this.properties.eventsToDisplay, serviceSource: this.properties.serviceSource },
+        displayMode: this.displayMode,
+        openPropertyPane: () => { this.context.propertyPane.open(); }
       }
     );
 
