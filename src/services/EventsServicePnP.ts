@@ -12,11 +12,13 @@ import { IEventService } from './IEventService';
 
 export class EventServicePnP implements IEventService {
   private _sp: any;
+  private _siteUrl: string;
   private _listName: string;
 
-  constructor(context: WebPartContext, siteUrl: string, listName: string) {
+  constructor(context: WebPartContext, siteUrl: string | undefined, listName: string = "") {
     console.log("EventsServicePnP.constructor() called", { context, siteUrl, listName });
     this._sp = spfi(`${siteUrl}`).using(SPFx(context));
+    this._siteUrl = siteUrl;
     this._listName = listName;
   }
 
