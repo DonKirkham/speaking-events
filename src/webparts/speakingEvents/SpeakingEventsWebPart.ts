@@ -4,7 +4,7 @@ import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
-  PropertyPaneTextField
+  PropertyPaneDropdown
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
@@ -12,9 +12,15 @@ import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as strings from 'SpeakingEventsWebPartStrings';
 import SpeakingEvents, { ISpeakingEventsProps } from './components/SpeakingEvents';
 import { getEventService } from '../../services/getEventService';
+import { IPropertyFieldList, IPropertyFieldSite, PropertyFieldListPicker, PropertyFieldListPickerOrderBy, PropertyFieldSpinButton, PropertyFieldSitePicker } from '@pnp/spfx-property-controls';
+//import { PropertyFieldSitePicker } from '@pnp/spfx-property-controls/lib/PropertyFieldSitePicker';
 
 export interface ISpeakingEventsWebPartProps {
-  description: string;
+  sites: IPropertyFieldSite[];
+  list: IPropertyFieldList;
+  eventsToDisplay: number;
+  serviceSource: string;
+  maxEvents: number;
 }
 
 export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeakingEventsWebPartProps> {
@@ -26,12 +32,13 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
     const element: React.ReactElement<ISpeakingEventsProps> = React.createElement(
       SpeakingEvents,
       {
-        description: this.properties.description,
+        //description: this.properties.description,
         isDarkTheme: this._isDarkTheme,
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
-        context: this.context
+        context: this.context,
+        maxEvents: this.properties.maxEvents
       }
     );
 
@@ -41,7 +48,7 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
   protected async onInit(): Promise<void> {
     await super.onInit();
     this._environmentMessage = await this._getEnvironmentMessage();
-    getEventService({ source: "REST", context: this.context, siteUrl: "https://pdslabs2.sharepoint.com", listName: "Speaking Events" });
+    getEventService({ source: "PnP", context: this.context, siteUrl: this.properties.sites[0].url!, listName: this.properties.list.title! });
   }
 
 
@@ -98,20 +105,96 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
     return Version.parse('1.0');
   }
 
+  private onSiteChanged = async (propertyPath: string, oldValue: any, newValue: any): Promise<void> => {
+    if (propertyPath === 'site' && newValue) {
+      this.properties.sites = newValue;
+      this.properties.list = null as any;
+      this.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
+      this.context.propertyPane.refresh();
+    }
+    else {
+      super.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
+    }
+  }
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
         {
           header: {
-            description: strings.PropertyPaneDescription
+            description: "Displays upcoming Speaking events"
           },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              groupName: "",
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
+                PropertyFieldSitePicker('sites', {
+                  label: 'Select sites',
+                  initialSites: this.properties.sites,
+                  context: this.context as any,
+                  deferredValidationTime: 500,
+                  multiSelect: false,
+                  onPropertyChange: this.onSiteChanged.bind(this),
+                  properties: this.properties,
+                  key: 'sitesFieldId'
+                }),
+                PropertyFieldListPicker('list', {
+                  label: 'Select a list with Speaking events',
+                  selectedList: this.properties.list,
+                  includeHidden: false,
+                  orderBy: PropertyFieldListPickerOrderBy.Title,
+                  disabled: this.properties.sites.length !== 1,
+                  onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),
+                  properties: this.properties,
+                  context: this.context as any,
+                  onGetErrorMessage: null as any,
+                  deferredValidationTime: 0,
+                  includeListTitleAndUrl: true,
+                  webAbsoluteUrl: this.properties.sites[0]?.url,
+                  key: 'listPickerFieldId'
+                }),
+                PropertyFieldSpinButton('eventsToDisplay', {
+                  label: 'Number of events to display',
+                  initialValue: this.properties.eventsToDisplay,
+                  onPropertyChange: this.onPropertyPaneFieldChanged,
+                  properties: this.properties,
+                  disabled: false,
+                  suffix: ' events',
+                  min: 0,
+                  max: 20,
+                  step: 1,
+                  decimalPlaces: 0,
+                  incrementIconName: 'CalculatorAddition',
+                  decrementIconName: 'CalculatorSubtract',
+                  key: 'spinButtonFieldId'
                 })
+              ]
+            }
+          ]
+        },
+        {
+          header: {
+            description: "Advanced Settings"
+          },
+          groups: [
+            {
+              groupName: "",
+              groupFields: [
+                PropertyPaneDropdown('serviceSource',
+                  {
+                    label: "Service Source",
+                    selectedKey: this.properties.serviceSource,
+                    options: [
+                      {
+                        key: "PnPJs",
+                        text: "PnPJs"
+                      },
+                      {
+                        key: "REST",
+                        text: "REST"
+                      }
+                    ]
+                  })
               ]
             }
           ]

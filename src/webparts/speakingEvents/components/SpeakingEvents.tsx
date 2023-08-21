@@ -2,38 +2,35 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './SpeakingEvents.module.scss';
-import { escape, set  } from '@microsoft/sp-lodash-subset';
+//import { escape, set  } from '@microsoft/sp-lodash-subset';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { ISpeakingEvent as ISpeakingEvent } from '../../../models/ISpeakingEvent';
-import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
-import { EventServiceREST } from '../../../services/EventsServiceREST';
-import { EventServicePnP } from '../../../services/EventsServicePnP';
+//import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
+//import { EventServiceREST } from '../../../services/EventsServiceREST';
+//import { EventServicePnP } from '../../../services/EventsServicePnP';
 import { getEventService } from '../../../services/getEventService';
 
 //globals
 
 export interface ISpeakingEventsProps {
-  description: string;
+  //description: string;
   isDarkTheme: boolean;
   environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
   context: WebPartContext
+  maxEvents: number;
 }
 
 export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   const {
-    description,
+    //description,
     isDarkTheme,
     environmentMessage,
     hasTeamsContext,
     userDisplayName,
     context
   } = props;
-
-  //const dataService = new EventsServiceREST(context, "https://pdslabs2.sharepoint.com", "Speaking%20Events");
-  const dataService = new EventServicePnP(context, "https://pdslabs2.sharepoint.com", "Speaking Events");
-
 
   const [counter, setCounter] = useState<number>(0);
   const [oddEven, setOddEven] = useState<string>('');
@@ -42,6 +39,9 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
 
   const getData = async (): Promise<ISpeakingEvent[]> => {
     console.log("getData() called");
+    if (getEventService() === undefined) {
+      return [];
+    }
     return await getEventService().GetEvents();
   }
 
@@ -63,7 +63,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     setCounter(counter + 1);
   }
 
-  const onAddEventRESTClicked = async () => {
+  const onAddEventRESTClicked = async (): Promise<void> => {
     console.log("onAddEventRESTClicked) called");
     const _currentDate = new Date();
     const _newEvent: ISpeakingEvent = {
@@ -71,11 +71,11 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
       Session: "Super secret session",
       SessionDate: new Date(2023, 11, 1, _currentDate.getHours(), _currentDate.getMinutes(), _currentDate.getSeconds())
     }
-    await dataService.AddEvent(_newEvent);
+    await getEventService().AddEvent(_newEvent);
     setEvents(await getData());
   }
 
-  const onAddEventPnPClicked = async () => {
+  const onAddEventPnPClicked = async (): Promise<void> => {
     console.log("onAddEventPnPClicked) called");
     const _currentDate = new Date();
     const _newEvent: ISpeakingEvent = {
@@ -83,7 +83,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
       Session: "Super secret session",
       SessionDate: new Date(2023, 11, 1, _currentDate.getHours(), _currentDate.getMinutes(), _currentDate.getSeconds())
     }
-    await dataService.AddEvent(_newEvent);
+    await getEventService().AddEvent(_newEvent);
     setEvents(await getData());
   }
 
@@ -92,7 +92,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   return (
     <section className={`${styles.speakingEvents} ${hasTeamsContext ? styles.teams : ''}`}>
       <div className={styles.welcome}>
-        {events.length == 0 ?
+        {events.length === 0 ?
           <p>Loading Data . . .</p>
           :
           <>

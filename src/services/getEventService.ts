@@ -4,7 +4,7 @@ import { IEventService } from './IEventService';
 import { EventServiceREST } from './EventsServiceREST';
 import { EventServicePnP } from './EventsServicePnP';
 
-let _service: IEventService = null;
+let _service: IEventService;
 
 export const getEventService = (init ?:{ source: string, context: WebPartContext, siteUrl: string, listName: string }): IEventService => {
   if (!!init?.listName && !!init?.siteUrl && !!init?.context) {
