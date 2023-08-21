@@ -22,7 +22,7 @@ export interface ISpeakingEventsProps {
   hasTeamsContext: boolean;
   userDisplayName: string;
   context: WebPartContext;
-  dataService: IEventService;
+  //dataService: IEventService;
   properties: ISpeakingEventsWebPartProps
   //maxEvents: number;
 }
@@ -30,17 +30,17 @@ export interface ISpeakingEventsProps {
 export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   const {
     //description,
-    isDarkTheme,
-    environmentMessage,
+    //isDarkTheme,
+    //environmentMessage,
     hasTeamsContext,
-    userDisplayName,
-    context
+    //userDisplayName,
+    //context
   } = props;
 
   const [counter, setCounter] = useState<number>(0);
   const [oddEven, setOddEven] = useState<string>('');
   const [events, setEvents] = useState<ISpeakingEvent[]>([]);
-  const [properties, setProperties] = useState<ISpeakingEventsWebPartProps>(null);
+  const [wpProperties, setWpProperties] = useState<ISpeakingEventsWebPartProps>();
 
 
   const getData = async (): Promise<ISpeakingEvent[]> => {
@@ -61,8 +61,8 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
 
   useEffect(() => {
     console.log("useEffect() called");
-    if (properties !== props.properties) {
-      setProperties(props.properties);
+    if (wpProperties !== props.properties) {
+      setWpProperties(props.properties);
     }
   });
 
@@ -75,7 +75,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
       console.log("useEffect([properties]) called");
       await getData();
     })();
-  }, [properties]);
+  }, [wpProperties]);
 
 
   useEffect(() => {
@@ -133,9 +133,11 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
                 <button onClick={() => onAddEventPnPClicked()}>Add PnPJs Event!</button>
               </div>
               <p style={{ textAlign: "left" }}>
-                {events.map((event: ISpeakingEvent) => {
-                  return <div key={event.id}>{event.EventName}: <b>{event.Session}</b>: {event.SessionDate?.toLocaleDateString([], { hour: 'numeric', minute: '2-digit' })} </div>
-                })}
+                {events.map((event: ISpeakingEvent, index: number) => {
+                  if (index <= props.properties.eventsToDisplay) return
+                     <div key={event.id}>{event.EventName}: <b>{event.Session}</b>: {event.SessionDate?.toLocaleDateString([], { hour: 'numeric', minute: '2-digit' })} </div>
+                  }
+                )}
               </p>
             </>
         }

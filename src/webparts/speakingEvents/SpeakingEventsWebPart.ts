@@ -20,7 +20,6 @@ export interface ISpeakingEventsWebPartProps {
   list: IPropertyFieldList;
   eventsToDisplay: number;
   serviceSource: string;
-  //maxEvents: number;
 }
 
 export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeakingEventsWebPartProps> {
@@ -32,15 +31,13 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
     const element: React.ReactElement<ISpeakingEventsProps> = React.createElement(
       SpeakingEvents,
       {
-        //description: this.properties.description,
         isDarkTheme: this._isDarkTheme,
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
         context: this.context,
-        dataService: getEventService(),
-        properties: this.properties
-        //maxEvents: this.properties.maxEvents
+        //dataService: getEventService(),
+        properties: { sites: this.properties.sites, list: this.properties.list, eventsToDisplay:this.properties.eventsToDisplay, serviceSource: this.properties.serviceSource }
       }
     );
 
