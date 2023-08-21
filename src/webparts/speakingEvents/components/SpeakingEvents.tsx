@@ -40,7 +40,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   const [counter, setCounter] = useState<number>(0);
   const [oddEven, setOddEven] = useState<string>('');
   const [events, setEvents] = useState<ISpeakingEvent[]>([]);
-  const [properties, setProperties] = useState<ISpeakingEventsWebPartProps>();
+  const [properties, setProperties] = useState<ISpeakingEventsWebPartProps>(null);
 
 
   const getData = async (): Promise<ISpeakingEvent[]> => {
@@ -72,10 +72,10 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
 
   useEffect(() => {
     (async () => {
-      console.log("useEffect([dataService]) called");
+      console.log("useEffect([properties]) called");
       await getData();
     })();
-  }, [dataService]);
+  }, [properties]);
 
 
   useEffect(() => {
