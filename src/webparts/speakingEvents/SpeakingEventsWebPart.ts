@@ -109,15 +109,17 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
   }
 
   protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
-    if (propertyPath === 'list' && newValue !== oldValue) {
-      getEventService({ source: this.properties.serviceSource, context: this.context, siteUrl: this.properties.sites[0].url!, listName: newValue.title! });
-      //this.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
-      //this.context.propertyPane.refresh();
-      //this.render();
+    if (newValue !== oldValue) {
+      if (propertyPath === 'list') {
+        getEventService({ source: this.properties.serviceSource, context: this.context, siteUrl: this.properties.sites[0].url!, listName: newValue.title! });
+      }
+      if (propertyPath === 'serviceSource') {
+        getEventService({ source: newValue, context: this.context, siteUrl: this.properties.sites[0].url!, listName: this.properties.list.title! });
+      }
     }
-    else {
+    // else {
       super.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
-    }
+    // }
   }
   
   private onSiteChanged = async (propertyPath: string, oldValue: any, newValue: any): Promise<void> => {
@@ -158,7 +160,7 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
                   selectedList: this.properties.list,
                   includeHidden: false,
                   orderBy: PropertyFieldListPickerOrderBy.Title,
-                  disabled: !!this.properties.sites && this.properties.sites.length !== 1,
+                  disabled: this.properties.sites === undefined ,
                   onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),
                   properties: this.properties,
                   context: this.context as any,

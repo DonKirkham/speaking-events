@@ -37,8 +37,8 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     //context
   } = props;
 
-  const [counter, setCounter] = useState<number>(0);
-  const [oddEven, setOddEven] = useState<string>('');
+  // const [counter, setCounter] = useState<number>(0);
+  // const [oddEven, setOddEven] = useState<string>('');
   const [events, setEvents] = useState<ISpeakingEvent[]>([]);
   const [wpProperties, setWpProperties] = useState<ISpeakingEventsWebPartProps>();
 
@@ -72,21 +72,21 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
 
   useEffect(() => {
     (async () => {
-      console.log("useEffect([properties]) called");
+      console.log("useEffect([wpProperties]) called");
       await getData();
     })();
   }, [wpProperties]);
 
 
-  useEffect(() => {
-    console.log("useEffect([counter]) called");
-    setOddEven(counter % 2 === 0 ? 'even' : 'odd');
-  }, [counter]);
+  // useEffect(() => {
+  //   console.log("useEffect([counter]) called");
+  //   setOddEven(counter % 2 === 0 ? 'even' : 'odd');
+  // }, [counter]);
 
-  const onCounterButtonClicked = () => {
-    console.log("onCounterButtonClicked() called");
-    setCounter(counter + 1);
-  }
+  // const onCounterButtonClicked = () => {
+  //   console.log("onCounterButtonClicked() called");
+  //   setCounter(counter + 1);
+  // }
 
   const onAddEventRESTClicked = async (): Promise<void> => {
     console.log("onAddEventRESTClicked) called");
@@ -134,9 +134,12 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
               </div>
               <p style={{ textAlign: "left" }}>
                 {events.map((event: ISpeakingEvent, index: number) => {
-                  if (index <= props.properties.eventsToDisplay) return
-                     <div key={event.id}>{event.EventName}: <b>{event.Session}</b>: {event.SessionDate?.toLocaleDateString([], { hour: 'numeric', minute: '2-digit' })} </div>
+                  if (index < props.properties.eventsToDisplay) {
+                    return (
+                      <div key={event.id}>{event.EventName}: <b>{event.Session}</b>: {event.SessionDate?.toLocaleDateString([], { hour: 'numeric', minute: '2-digit' })} </div>
+                    );
                   }
+                }
                 )}
               </p>
             </>

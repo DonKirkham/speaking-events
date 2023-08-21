@@ -16,9 +16,9 @@ export class EventServiceREST  {
     this._listName = listName;
   }
 
-  public GetEvents = async (): Promise<ISpeakingEvent[]> => {
+  public GetEvents = async (eventsToDisplay: number): Promise<ISpeakingEvent[]> => {
     console.log("GetEvents(REST) called");
-    const _url = `${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items?$select=Id,Title,Session,SessionDate&$orderby=SessionDate%20desc`;
+    const _url = `${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items?$select=Id,Title,Session,SessionDate&$orderby=SessionDate%20desc&$top=${eventsToDisplay || 5000}`;
     const _requestOptions = {
       headers: {
         'ACCEPT': 'application/json; odata.metadata=none'
@@ -34,7 +34,7 @@ export class EventServiceREST  {
         SessionDate: new Date(item.SessionDate)
       };
     });
-    console.log("getData() returning data", _events);
+    console.log("GetEvents(REST) return", _events);
     return _events;
   }
 

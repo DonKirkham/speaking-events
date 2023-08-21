@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
+//import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { ISpeakingEvent } from '../models/ISpeakingEvent';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { spfi, SPFx } from "@pnp/sp";
@@ -12,18 +12,18 @@ import { IEventService } from './IEventService';
 
 export class EventServicePnP implements IEventService {
   private _sp: any;
-  private _siteUrl: string;
+  //private _siteUrl: string;
   private _listName: string;
 
   constructor(context: WebPartContext, siteUrl: string = "", listName: string = "") {
     console.log("EventsServicePnP.constructor() called", { context, siteUrl, listName });
     this._sp = spfi(`${siteUrl}`).using(SPFx(context));
-    this._siteUrl = siteUrl!;
+    //this._siteUrl = siteUrl!;
     this._listName = listName!;
   }
 
-  public GetEvents = async (eventsToDisplay ?: number): Promise<ISpeakingEvent[]> => {
-    console.log("getData() called");
+  public GetEvents = async (eventsToDisplay?: number): Promise<ISpeakingEvent[]> => {
+    console.log("GetEvents(PnP) called", { eventsToDisplay: eventsToDisplay });
     const _eventsSP = await this._sp.web.lists.getByTitle(`${this._listName}`).items.select("Id, Title, Session, SessionDate").top(eventsToDisplay ?? 5000).orderBy("SessionDate", false)();
     const _events: ISpeakingEvent[] = _eventsSP.map((item: any) => {
       return {
@@ -33,7 +33,7 @@ export class EventServicePnP implements IEventService {
         SessionDate: new Date(item.SessionDate)
       };
     });
-    console.log("getData() returning data", _events);
+    console.log("GetEvents(PnP) return", _events);
     return _events;
   }
 
@@ -54,12 +54,12 @@ export class EventServicePnP implements IEventService {
     console.log("updateEvent() called", { event });
     const _result = this._sp.web.lists.getByTitle("Speaking Events").items.getById(event.id)
       .update(
-      {
-        Title: event.EventName,
-        Session: event.Session,
-        SessionDate: event.SessionDate?.toISOString()
-      }
-    );
+        {
+          Title: event.EventName,
+          Session: event.Session,
+          SessionDate: event.SessionDate?.toISOString()
+        }
+      );
     return _result;
   }
 
