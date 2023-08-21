@@ -22,9 +22,9 @@ export class EventServicePnP implements IEventService {
     this._listName = listName!;
   }
 
-  public GetEvents = async (): Promise<ISpeakingEvent[]> => {
+  public GetEvents = async (eventsToDisplay ?: number): Promise<ISpeakingEvent[]> => {
     console.log("getData() called");
-    const _eventsSP = await this._sp.web.lists.getByTitle(`${this._listName}`).items.select("Id, Title, Session, SessionDate").orderBy("SessionDate", false)();
+    const _eventsSP = await this._sp.web.lists.getByTitle(`${this._listName}`).items.select("Id, Title, Session, SessionDate").top(eventsToDisplay ?? 5000).orderBy("SessionDate", false)();
     const _events: ISpeakingEvent[] = _eventsSP.map((item: any) => {
       return {
         id: item.Id,

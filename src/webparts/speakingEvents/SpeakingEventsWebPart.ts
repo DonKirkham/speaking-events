@@ -20,7 +20,7 @@ export interface ISpeakingEventsWebPartProps {
   list: IPropertyFieldList;
   eventsToDisplay: number;
   serviceSource: string;
-  maxEvents: number;
+  //maxEvents: number;
 }
 
 export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeakingEventsWebPartProps> {
@@ -38,7 +38,9 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
         context: this.context,
-        maxEvents: this.properties.maxEvents
+        dataService: getEventService(),
+        properties: this.properties
+        //maxEvents: this.properties.maxEvents
       }
     );
 
@@ -48,7 +50,11 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
   protected async onInit(): Promise<void> {
     await super.onInit();
     this._environmentMessage = await this._getEnvironmentMessage();
-    getEventService({ source: "PnP", context: this.context, siteUrl: this.properties.sites[0].url!, listName: this.properties.list.title! });
+    this.properties.serviceSource = this.properties.serviceSource || "PnPJs";
+    this.properties.eventsToDisplay = this.properties.eventsToDisplay || 4;
+    if (!!this.properties.sites && !!this.properties.list) {
+      getEventService({ source: this.properties.serviceSource || "PnPJs", context: this.context, siteUrl: this.properties.sites[0].url!, listName: this.properties.list.title! });
+    }
   }
 
 
@@ -105,6 +111,18 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
     return Version.parse('1.0');
   }
 
+  protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
+    if (propertyPath === 'list' && newValue !== oldValue) {
+      getEventService({ source: this.properties.serviceSource, context: this.context, siteUrl: this.properties.sites[0].url!, listName: newValue.title! });
+      //this.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
+      //this.context.propertyPane.refresh();
+      //this.render();
+    }
+    else {
+      super.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
+    }
+  }
+  
   private onSiteChanged = async (propertyPath: string, oldValue: any, newValue: any): Promise<void> => {
     if (propertyPath === 'site' && newValue) {
       this.properties.sites = newValue;
@@ -143,14 +161,14 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
                   selectedList: this.properties.list,
                   includeHidden: false,
                   orderBy: PropertyFieldListPickerOrderBy.Title,
-                  disabled: this.properties.sites.length !== 1,
+                  disabled: !!this.properties.sites && this.properties.sites.length !== 1,
                   onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),
                   properties: this.properties,
                   context: this.context as any,
                   onGetErrorMessage: null as any,
                   deferredValidationTime: 0,
                   includeListTitleAndUrl: true,
-                  webAbsoluteUrl: this.properties.sites[0]?.url,
+                  webAbsoluteUrl: this.properties.sites ? this.properties.sites[0]?.url : "",
                   key: 'listPickerFieldId'
                 }),
                 PropertyFieldSpinButton('eventsToDisplay', {

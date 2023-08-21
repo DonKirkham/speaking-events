@@ -8,7 +8,7 @@ let _service: IEventService;
 
 export const getEventService = (init ?:{ source: string, context: WebPartContext, siteUrl: string, listName: string }): IEventService => {
   if (!!init?.listName && !!init?.siteUrl && !!init?.context) {
-    if (init?.source === "PnP")
+    if (init?.source === "PnPJs")
     {
       _service = new EventServicePnP(init.context, init.siteUrl, init.listName);
       return _service;
