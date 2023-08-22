@@ -158,13 +158,13 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
             events.length > 0 ?
               <div className={styles.events}>
                 {events.map((e: ISpeakingEvent) => {
-                  // const sessionDate = format(parseISO(e.SessionDate.toString()), 'MMM d, yyyy h:mma');
-                  // const daysToGo = differenceInDays(parseISO(e.SessionDate.toString()), today);
+                  //const sessionDate: string = format(parseISO(e.SessionDate.toString()), 'MMM d, yyyy h:mma');
+                  const daysToGo: number = differenceInDays(e.SessionDate, today);
                   return (
                     <div className={styles.event}>
-                      {/* <div className={styles.countdown} style={{ background: daysToGo < 7 ? 'red' : 'green' }} ><span>{daysToGo}</span><span> day{daysToGo === 1 ? "" : "s"}</span></div> */}
+                      <div className={styles.countdown} style={{ background: daysToGo < 7 ? 'red' : 'green' }} ><span>{daysToGo}</span><span> day{daysToGo === 1 ? "" : "s"}</span></div>
                       <div className={styles.eventName}>{e.EventName}</div>
-                      {/* <div className={styles.sessionDate}>{e.SessionDate}</div> */}
+                      <div className={styles.sessionDate}>{e.SessionDate?.toLocaleString()}</div>
                       <div className={styles.sessionTitle}>{e.Session}</div>
                       {/* <div className={styles.sessionType}>{e.SessionType}</div> */}
                     </div>
