@@ -121,6 +121,11 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     <section className={`${styles.speakingEvents} ${hasTeamsContext ? styles.teams : ''}`}>
       <div className={styles.row}>
         <div className={styles.column}>
+          <div className={styles.webRow} >
+            <WebPartTitle className={styles.webPartTitle} displayMode={props.displayMode}
+              title={props.properties.title}
+              updateProperty={props.updateWebpartTitle} />
+          </div>
         </div>
       </div>
       <div className={styles.row}>
