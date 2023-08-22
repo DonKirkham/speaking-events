@@ -138,11 +138,21 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
             </div>
             : <></>
           }
-
         </div>
       </div>
       <div className={styles.row}>
         <div className={styles.column}>
+          {!getEventService() ?
+
+            <Placeholder iconName='Edit'
+              iconText='Configure your web part'
+              description='Please configure the web part.'
+              buttonLabel='Configure'
+              hideButton={props.displayMode === DisplayMode.Read}
+              onConfigure={props.context.propertyPane.open} />
+            :
+            <div>Data Here</div>
+          }
         </div>
       </div>
     </section>
