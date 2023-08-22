@@ -18,7 +18,29 @@ export class EventServiceREST  {
 
   public GetEvents = async (eventsToDisplay: number): Promise<ISpeakingEvent[]> => {
     console.log("GetEvents(REST) called");
-    const _url = `${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items?$select=Id,Title,Session,SessionDate&$orderby=SessionDate%20desc&$top=${eventsToDisplay || 5000}`;
+    const _url = new URL(`${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items?$select=Title,SessionDate,Session,SessionType&$top=${eventsToDisplay ?? 5000}&$orderBy=SessionDate desc`).href
+    const _requestOptions = {
+      headers: {
+        'ACCEPT': 'application/json; odata.metadata=none'
+      }
+    }
+    const _response: SPHttpClientResponse = await this._spHttpClient.get(_url, SPHttpClient.configurations.v1, _requestOptions);
+    const _responseJson = await _response.json();
+    const _events: ISpeakingEvent[] = _responseJson.value.map((item: any) => {
+      return {
+        id: item.Id,
+        EventName: item.Title,
+        Session: item.Session,
+        SessionDate: new Date(item.SessionDate)
+      };
+    });
+    console.log("GetEvents(REST) return", _events);
+    return _events;
+  }
+
+  public GetUpcomingEvents = async (eventsToDisplay: number): Promise<ISpeakingEvent[]> => {
+    console.log("GetEvents(REST) called");
+    const _url = new URL(`${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items?$select=Title,SessionDate,Session,SessionType&$filter=SessionDate ge datetime'${new Date().toISOString().split("T")[0]}T00:00:00.000Z'&$top=${eventsToDisplay ?? 5000}&$orderBy=SessionDate`).href
     const _requestOptions = {
       headers: {
         'ACCEPT': 'application/json; odata.metadata=none'

@@ -23,8 +23,23 @@ export class EventServicePnP implements IEventService {
   }
 
   public GetEvents = async (eventsToDisplay?: number): Promise<ISpeakingEvent[]> => {
+    console.log("GetEvents(PnP) called");
+    const _eventsSP = await this._sp.web.lists.getByTitle(`${this._listName}`).items.select('Title, SessionDate, Session, SessionType').top(eventsToDisplay ?? 5000).orderBy("SessionDate", false)();
+    const _events: ISpeakingEvent[] = _eventsSP.map((item: any) => {
+      return {
+        id: item.Id,
+        EventName: item.Title,
+        Session: item.Session,
+        SessionDate: new Date(item.SessionDate)
+      };
+    });
+    console.log("GetEvents(PnP) return", _events);
+    return _events;
+  }
+
+  public GetUpcomingEvents = async (eventsToDisplay?: number): Promise<ISpeakingEvent[]> => {
     console.log("GetEvents(PnP) called", { eventsToDisplay: eventsToDisplay });
-    const _eventsSP = await this._sp.web.lists.getByTitle(`${this._listName}`).items.select("Id, Title, Session, SessionDate").top(eventsToDisplay ?? 5000).orderBy("SessionDate", false)();
+    const _eventsSP = await this._sp.web.lists.getByTitle(`${this._listName}`).items.select('Title, SessionDate, Session, SessionType').filter(`SessionDate ge datetime'${new Date().toISOString().split("T")[0]}T00:00:00.000Z'`).top(eventsToDisplay ?? 5000).orderBy("SessionDate", true)();
     const _events: ISpeakingEvent[] = _eventsSP.map((item: any) => {
       return {
         id: item.Id,

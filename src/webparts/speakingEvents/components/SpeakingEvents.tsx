@@ -13,23 +13,20 @@ import { IEventService } from '../../../services/IEventService';
 import { get, set } from '@microsoft/sp-lodash-subset';
 import { ISpeakingEventsWebPartProps } from '../SpeakingEventsWebPart';
 import { DisplayMode } from '@microsoft/sp-core-library';
-import { Placeholder } from '@pnp/spfx-controls-react';
+import { Placeholder, WebPartTitle } from '@pnp/spfx-controls-react';
+import { Icon } from 'office-ui-fabric-react';
 
 //globals
 
 export interface ISpeakingEventsProps {
-  //description: string;
   isDarkTheme: boolean;
   environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
   context: WebPartContext;
   displayMode: DisplayMode;
-
-  //dataService: IEventService;
-  properties: ISpeakingEventsWebPartProps
-  //maxEvents: number;
-  openPropertyPane: () => void;
+  properties: ISpeakingEventsWebPartProps;
+  updateWebpartTitle: (title: string) => void;
 }
 
 export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
@@ -56,7 +53,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     }
     let _events: ISpeakingEvent[] = [];
     const timer = setTimeout(async () => {
-      _events = await dataService.GetEvents(props.properties.eventsToDisplay);
+      _events = await dataService.GetUpcomingEvents(props.properties.eventsToDisplay);
       setEvents(_events);
       return _events;
     }, 0);
@@ -99,7 +96,8 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     const _newEvent: ISpeakingEvent = {
       EventName: "New secret event",
       Session: "Super secret session",
-      SessionDate: new Date(2023, 11, 1, _currentDate.getHours(), _currentDate.getMinutes(), _currentDate.getSeconds())
+      SessionDate: new Date()
+      //new Date(2023, 11, 1, _currentDate.getHours(), _currentDate.getMinutes(), _currentDate.getSeconds())
     }
     await getEventService().AddEvent(_newEvent);
     setEvents(await getData());
@@ -121,39 +119,13 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   console.log("Render() called");
   return (
     <section className={`${styles.speakingEvents} ${hasTeamsContext ? styles.teams : ''}`}>
-      <div className={styles.welcome}>
-        {!getEventService() ?
-          <Placeholder iconName='Edit'
-            iconText='Configure your web part'
-            description='Please configure the web part.'
-            buttonLabel='Configure'
-            hideButton={props.displayMode === DisplayMode.Read}
-            onConfigure={props.openPropertyPane} />
-          : events.length === 0 ?
-            <p>Loading Data . . .</p>
-            :
-            <>
-              {/* <h3>Welcome to SharePoint Framework!</h3>
-            <p>Counter: <strong>{counter}</strong></p>
-            <p>Counter is <strong>{oddEven}</strong></p>
-            <p><button onClick={() => onCounterButtonClicked()}>Click Me!!</button></p>
-            <hr /> */}
-              <div>
-                <button onClick={() => onAddEventRESTClicked()}>Add REST Event!</button>
-                <button onClick={() => onAddEventPnPClicked()}>Add PnPJs Event!</button>
-              </div>
-              <p style={{ textAlign: "left" }}>
-                {events.map((event: ISpeakingEvent, index: number) => {
-                  if (index < props.properties.eventsToDisplay) {
-                    return (
-                      <div key={event.id}>{event.EventName}: <b>{event.Session}</b>: {event.SessionDate?.toLocaleDateString([], { hour: 'numeric', minute: '2-digit' })} </div>
-                    );
-                  }
-                }
-                )}
-              </p>
-            </>
-        }
+      <div className={styles.row}>
+        <div className={styles.column}>
+        </div>
+      </div>
+      <div className={styles.row}>
+        <div className={styles.column}>
+        </div>
       </div>
     </section>
   );

@@ -1,36 +1,179 @@
 @import '~@fluentui/react/dist/sass/References.scss';
 
 .speakingEvents {
+  margin: 0px auto;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
   overflow: hidden;
   padding: 1em;
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
+
   &.teams {
     font-family: $ms-font-family-fallbacks;
   }
-  background-color: lightblue;//"[theme:bodyBackground, default: lightblue;]"
-}
 
-.welcome {
-  text-align: center;
-}
+  .row {
+    background-color: $ms-color-themePrimary;
+  }
 
-.welcomeImage {
-  width: 100%;
-  max-width: 420px;
-}
+  .column {
+    font: inherit;
+    padding: 5px 15px;
+  }
 
-.links {
-  text-align: left;
-  a {
-    text-decoration: none;
-    color: "[theme:link, default:#03787c]";
-    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+  .webRow {
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 5px;
 
-    &:hover {
-      text-decoration: underline;
-      color: "[theme:linkHovered, default: #014446]";
-      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
+    // &div:first-of-type {
+    //   width: 100%;
+    // }
+  }
+
+  .webRow div:first-of-type {
+    width: 100%;
+  }
+
+  .webPartTitle {
+    @include ms-font-xl;
+    @include ms-fontColor-white;
+    margin-bottom: 0px;
+  }
+
+  .info {
+    text-align: right;
+    color: white;
+    font-size: 20px;
+    margin-top: 5px;
+    z-index: 100;
+  }
+
+  .info ul {
+    display: none;
+    flex-direction: column;
+    color: #333;
+    border: 1px solid #555;
+    background: #eee;
+    list-style: none;
+    padding: 7px;
+    font-weight: 400;
+    position: absolute;
+    right: 10px;
+    top: 20px;
+  }
+
+  .info:hover ul {
+    display: flex;
+  }
+
+  .info ul li span {
+    color: crimson;
+  }
+
+  .error {
+    @include ms-font-l;
+    font-weight: 400;
+    color: darkred;
+    background-color: #eee;
+    /* width: 100%; */
+    padding: 26px;
+  }
+
+  .events {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 10px;
+  }
+
+  .event {
+    width: 247px;
+    border: 1px solid #333;
+    background-color: #eee;
+    color: #333;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 5px;
+    padding: 13px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: center;
+  }
+
+  .countdown {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+    border: 1px solid #333;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: green;
+    color: white;
+
+    span {
+      margin: -3px;
+      font-size: 1.7em;
+      font-weight: 600;
     }
   }
+
+  .eventName {
+    font-weight: 600;
+    font-size: 1.5em;
+    width: 95%;
+    height: 2.5em;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .sessionTitle {
+    width: 95%;
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: darkblue;
+    font-style: italic;
+    min-height: 3.7em;
+    align-items: center;
+  }
+
+  .speaker {
+    width: 90%;
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 1.3em;
+    font-weight: 700;
+  }
+
+  .sessionDate {
+    width: 90%;
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .sessionType {
+    width: 90%;
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+    margin-top: 10px;
+  }
+
 }

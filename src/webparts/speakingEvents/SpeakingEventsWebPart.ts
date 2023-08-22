@@ -16,6 +16,7 @@ import { IPropertyFieldList, IPropertyFieldSite, PropertyFieldListPicker, Proper
 //import { PropertyFieldSitePicker } from '@pnp/spfx-property-controls/lib/PropertyFieldSitePicker';
 
 export interface ISpeakingEventsWebPartProps {
+  title: string;
   sites: IPropertyFieldSite[];
   list: IPropertyFieldList;
   eventsToDisplay: number;
@@ -36,10 +37,11 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
         context: this.context,
-        //dataService: getEventService(),
-        properties: { sites: this.properties.sites, list: this.properties.list, eventsToDisplay: this.properties.eventsToDisplay, serviceSource: this.properties.serviceSource },
+        properties: { title: this.properties.title, sites: this.properties.sites, list: this.properties.list, eventsToDisplay: this.properties.eventsToDisplay, serviceSource: this.properties.serviceSource },
         displayMode: this.displayMode,
-        openPropertyPane: () => { this.context.propertyPane.open(); }
+        updateWebpartTitle: (title: string) => {
+          this.properties.title = title;
+        }
       }
     );
 
@@ -51,6 +53,7 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
     this._environmentMessage = await this._getEnvironmentMessage();
     this.properties.serviceSource = this.properties.serviceSource || "PnPJs";
     this.properties.eventsToDisplay = this.properties.eventsToDisplay || 4;
+    this.properties.title = this.properties.title || "Upcoming Speaking Events";
     if (!!this.properties.sites && !!this.properties.list) {
       getEventService({ source: this.properties.serviceSource || "PnPJs", context: this.context, siteUrl: this.properties.sites[0].url!, listName: this.properties.list.title! });
     }
