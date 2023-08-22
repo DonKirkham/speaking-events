@@ -154,25 +154,23 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
               hideButton={props.displayMode === DisplayMode.Read}
               onConfigure={props.context.propertyPane.open} />
             :
-
-            events.length > 0 ?
+            events.length === 0 ?
+              <div style={{color: "white", fontSize: "20px", textAlign: "center"}}>Loading Speaking Events</div>
+              :
               <div className={styles.events}>
                 {events.map((e: ISpeakingEvent) => {
-                  //const sessionDate: string = format(parseISO(e.SessionDate.toString()), 'MMM d, yyyy h:mma');
                   const daysToGo: number = differenceInDays(e.SessionDate, today);
                   return (
                     <div className={styles.event}>
                       <div className={styles.countdown} style={{ background: daysToGo < 7 ? 'red' : 'green' }} ><span>{daysToGo}</span><span> day{daysToGo === 1 ? "" : "s"}</span></div>
                       <div className={styles.eventName}>{e.EventName}</div>
-                      <div className={styles.sessionDate}>{e.SessionDate?.toLocaleString()}</div>
+                      <div className={styles.sessionDate}>{e.SessionDate.toLocaleDateString([], { hour: 'numeric', minute: '2-digit' })}</div>
                       <div className={styles.sessionTitle}>{e.Session}</div>
                       {/* <div className={styles.sessionType}>{e.SessionType}</div> */}
                     </div>
                   );
                 })}
-              </div>
-              :
-              <div>No Speaking Events</div>
+              </div>            
           }
         </div>
       </div>
