@@ -1,6 +1,6 @@
 export interface ISpeakingEvent {
   id?: string;
-  EventName?: string;
+  EventName: string;
   Session?: string;
-  SessionDate?: Date
+  SessionDate: Date
 }

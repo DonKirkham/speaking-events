@@ -15,6 +15,8 @@ import { ISpeakingEventsWebPartProps } from '../SpeakingEventsWebPart';
 import { DisplayMode } from '@microsoft/sp-core-library';
 import { Placeholder, WebPartTitle } from '@pnp/spfx-controls-react';
 import { Icon } from 'office-ui-fabric-react';
+import { format, parseISO, differenceInDays } from 'date-fns';
+
 
 //globals
 
@@ -117,6 +119,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
 
 
   console.log("Render() called");
+  const today: Date = new Date();
   return (
     <section className={`${styles.speakingEvents} ${hasTeamsContext ? styles.teams : ''}`}>
       <div className={styles.row}>
@@ -151,7 +154,25 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
               hideButton={props.displayMode === DisplayMode.Read}
               onConfigure={props.context.propertyPane.open} />
             :
-            <div>Data Here</div>
+
+            events.length > 0 ?
+              <div className={styles.events}>
+                {events.map((e: ISpeakingEvent) => {
+                  // const sessionDate = format(parseISO(e.SessionDate.toString()), 'MMM d, yyyy h:mma');
+                  // const daysToGo = differenceInDays(parseISO(e.SessionDate.toString()), today);
+                  return (
+                    <div className={styles.event}>
+                      {/* <div className={styles.countdown} style={{ background: daysToGo < 7 ? 'red' : 'green' }} ><span>{daysToGo}</span><span> day{daysToGo === 1 ? "" : "s"}</span></div> */}
+                      <div className={styles.eventName}>{e.EventName}</div>
+                      {/* <div className={styles.sessionDate}>{e.SessionDate}</div> */}
+                      <div className={styles.sessionTitle}>{e.Session}</div>
+                      {/* <div className={styles.sessionType}>{e.SessionType}</div> */}
+                    </div>
+                  );
+                })}
+              </div>
+              :
+              <div>No Speaking Events</div>
           }
         </div>
       </div>
