@@ -126,6 +126,19 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
               title={props.properties.title}
               updateProperty={props.updateWebpartTitle} />
           </div>
+          {getEventService() ?
+            <div className={styles.info}>
+              <Icon iconName="info" />
+              <ul>
+                <li>DataSource: <span>{props.properties.serviceSource}</span></li>
+                <li>Site: <span>{props.properties.sites[0].title}</span></li>
+                <li>List: <span>{props.properties.list.title}</span></li>
+                <li>Events to Show: <span>{props.properties.eventsToDisplay === 0 ? "All" : props.properties.eventsToDisplay}</span></li>
+              </ul>
+            </div>
+            : <></>
+          }
+
         </div>
       </div>
       <div className={styles.row}>
