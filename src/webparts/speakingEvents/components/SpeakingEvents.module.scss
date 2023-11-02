@@ -5,14 +5,18 @@
   padding: 1em;
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
+
   &.teams {
     font-family: $ms-font-family-fallbacks;
   }
-  background-color: lightblue;//"[theme:bodyBackground, default: lightblue;]"
+
+  background-color: lightblue; //"[theme:bodyBackground, default: lightblue;]"
 }
 
 .welcome {
   text-align: center;
+  padding: 0;
+  margin: -5px 0 10px;
 }
 
 .welcomeImage {
@@ -22,6 +26,7 @@
 
 .links {
   text-align: left;
+
   a {
     text-decoration: none;
     color: "[theme:link, default:#03787c]";
@@ -33,4 +38,10 @@
       color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
     }
   }
+}
+
+
+.iconClass {
+  color: red;
+  margin: 0 7px;
 }

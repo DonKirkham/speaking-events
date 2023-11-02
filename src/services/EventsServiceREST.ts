@@ -1,8 +1,7 @@
 /* eslint-disable */
+import { WebPartContext } from '@microsoft/sp-webpart-base';
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { ISpeakingEvent } from '../models/ISpeakingEvent';
-import { WebPartContext } from '@microsoft/sp-webpart-base';
-import { IEventService } from './IEventService';
 
 export class EventServiceREST  {
   private _spHttpClient: SPHttpClient;
@@ -52,9 +51,11 @@ export class EventServiceREST  {
 
   public AddEvent = async (newEvent: ISpeakingEvent) => {
     console.log("AddEvent(REST) called", { newEvent });
-    const _url: string = `${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items`;
     const _itemEntityType: string = await this._getItemEntityType();
-    const _result: SPHttpClientResponse = await this._spHttpClient.post(_url, SPHttpClient.configurations.v1,
+    const _url: string = `${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items`;
+    const _result: SPHttpClientResponse = await this._spHttpClient.post(
+      _url,
+      SPHttpClient.configurations.v1,
       {
         body: JSON.stringify({
           Title: newEvent.EventName,
@@ -69,20 +70,19 @@ export class EventServiceREST  {
 
   public UpdateEvent = async (event: ISpeakingEvent): Promise<any> => {
     console.log("UpdateEvent(REST) called", { event });
-    const _url: string = `${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items(${event.id})`;
     const _itemEntityType: string = await this._getItemEntityType();
+    const _url: string = `${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items(${event.id})`;
     const _result: SPHttpClientResponse = await this._spHttpClient.post(_url, SPHttpClient.configurations.v1,
       {
         body: JSON.stringify({
           Title: event.EventName,
           Session: event.Session,
           SessionDate: event.SessionDate?.toISOString(),
-          '@odata.type': _itemEntityType,
-          '@odata.etag': '*'
+          '@odata.type': _itemEntityType
         }),
         headers: {
-          'IF-MATCH': '*',
-          'X-HTTP-Method': 'MERGE'
+          'X-HTTP-Method': 'MERGE', // PATCH
+          'IF-MATCH': '*' // Overwrite any changes made since retrieving the original item.
         }
       });
     return _result;
@@ -91,11 +91,13 @@ export class EventServiceREST  {
   public DeleteEvent = async (eventId: string): Promise<any> => {
     console.log("DeleteEvent(REST) called", { eventId });
     const _url: string = `${this._siteUrl}/_api/web/lists/getbytitle('${this._listName}')/items(${eventId})`;
-    const _result: SPHttpClientResponse = await this._spHttpClient.post(_url, SPHttpClient.configurations.v1,
+    const _result: SPHttpClientResponse = await this._spHttpClient.post(
+      _url,
+      SPHttpClient.configurations.v1,
       {
         headers: {
-          'IF-MATCH': '*',
-          'X-HTTP-Method': 'DELETE'
+          'X-HTTP-Method': 'DELETE',
+          'IF-MATCH': '*'
         }
       });
     return _result;

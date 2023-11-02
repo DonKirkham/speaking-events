@@ -48,9 +48,14 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
     await super.onInit();
     this._environmentMessage = await this._getEnvironmentMessage();
     this.properties.serviceSource = this.properties.serviceSource || "PnPJs";
-    this.properties.eventsToDisplay = this.properties.eventsToDisplay || 4;
+    this.properties.eventsToDisplay = this.properties.eventsToDisplay || 15;
     if (!!this.properties.sites && !!this.properties.list) {
-      getEventService({ source: this.properties.serviceSource || "PnPJs", context: this.context, siteUrl: this.properties.sites[0].url!, listName: this.properties.list.title! });
+      getEventService({
+        source: this.properties.serviceSource,
+        context: this.context,
+        siteUrl: this.properties.sites[0].url!,
+        listName: this.properties.list.title!
+      });
     }
   }
 
