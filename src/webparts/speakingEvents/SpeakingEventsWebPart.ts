@@ -47,7 +47,7 @@ export default class SpeakingEventsWebPart extends BaseClientSideWebPart<ISpeaki
   protected async onInit(): Promise<void> {
     await super.onInit();
     this._environmentMessage = await this._getEnvironmentMessage();
-    this.properties.serviceSource = this.properties.serviceSource || "PnPJs";
+    this.properties.serviceSource = this.properties.serviceSource || "REST";
     this.properties.eventsToDisplay = this.properties.eventsToDisplay || 15;
     if (!!this.properties.sites && !!this.properties.list) {
       getEventService({

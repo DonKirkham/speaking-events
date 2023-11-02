@@ -85,7 +85,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     <section className={`${styles.speakingEvents} ${hasTeamsContext ? styles.teams : ''}`}>
       <div className={styles.welcome}>
         {!getEventService() ?
-          <p>Service not initialized</p>
+          <p>Event Service not initialized</p>
           : events.length === 0 ?
             <p>Loading Data . . .</p>
             :
