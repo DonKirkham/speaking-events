@@ -36,3 +36,7 @@ obj
 *.cer
 # .PEM Certificates
 *.pem
+# .CER Certificates
+*.cer
+# .PEM Certificates
+*.pem
