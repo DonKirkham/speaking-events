@@ -25,7 +25,6 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   const [events, setEvents] = useState<ISpeakingEvent[]>([]);
   const [wpProperties, setWpProperties] = useState<ISpeakingEventsWebPartProps>();
 
-
   useEffect(() => {
     console.log("useEffect() called");
     if (wpProperties !== props.properties) {
@@ -69,12 +68,12 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     await getEvents();
   };
 
-  const onUpdateEvent = async (id): Promise<void> => {
+  const onUpdateEvent = async (event: ISpeakingEvent): Promise<void> => {
     console.log("onUpdateEvent called");
     const _updateEvent: ISpeakingEvent = {
-      id: id,
-      EventName: "UPDATED New secret event",
-      Session: "UPDATED Super secret session"
+      id: event.id,
+      EventName: `UPDATED ${event.EventName}` ,
+      Session: `UPDATED ${event.Session}`
     }
     await getEventService().UpdateEvent(_updateEvent);
     await getEvents();
@@ -104,7 +103,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
                             <a href='#' onClick={() => onDeleteEvent(event.id)}>
                               <FontIcon aria-label="Delete" iconName="Delete" className={styles.iconClass} />
                             </a>
-                            <a href='#' onClick={() => onUpdateEvent(event.id)}>
+                            <a href='#' onClick={() => onUpdateEvent(event)}>
                               <FontIcon aria-label="Update" iconName="Edit" className={styles.iconClass} />
                             </a>
                           </>
