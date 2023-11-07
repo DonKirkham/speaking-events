@@ -17,26 +17,26 @@
 		4321,
 		35729
 	],
-	// "portsAttributes": {
-	// 	"4321": {
-	// 		"protocol": "https",
-	// 		"label": "Manifest",
-	// 		"onAutoForward": "silent",
-	// 		"requireLocalPort": true
-	// 	},
-	// 	// Not needed for SPFx>= 1.12.1 
-	// 	// "5432": {
-	// 	// 	"protocol": "https",
-	// 	// 	"label": "Workbench",
-	// 	// 	"onAutoForward": "silent"
-	// 	// },
-	// 	"35729": {
-	// 		"protocol": "https",
-	// 		"label": "LiveReload",
-	// 		"onAutoForward": "silent",
-	// 		"requireLocalPort": true
-	// 	}
-	// },
+	"portsAttributes": {
+		"4321": {
+			"protocol": "https",
+			"label": "Manifest",
+			"onAutoForward": "silent",
+			"requireLocalPort": true
+		},
+		// Not needed for SPFx>= 1.12.1 
+		// "5432": {
+		// 	"protocol": "https",
+		// 	"label": "Workbench",
+		// 	"onAutoForward": "silent"
+		// },
+		"35729": {
+			"protocol": "https",
+			"label": "LiveReload",
+			"onAutoForward": "silent",
+			"requireLocalPort": true
+		}
+	},
 	"postCreateCommand": "bash .devcontainer/spfx-startup.sh",
 	"remoteUser": "node"
 }
