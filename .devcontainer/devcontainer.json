@@ -20,9 +20,9 @@
 	"portsAttributes": {
 		"4321": {
 			"protocol": "https",
-			"label": "Manifest",
-			"onAutoForward": "silent",
-			"requireLocalPort": true
+			"label": "Manifest"//,
+			//"onAutoForward": "silent",
+			//"requireLocalPort": true
 		},
 		// Not needed for SPFx>= 1.12.1 
 		// "5432": {
