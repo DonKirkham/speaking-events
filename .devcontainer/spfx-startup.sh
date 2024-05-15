@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-#export PS4="\$LINENO: "
-#set -xv
-
-echo
 echo -e "\e[1;94mInstalling Node dependencies\e[0m"
 FILE=./package-lock.json
 if test -f "$FILE"; then
@@ -44,7 +40,6 @@ if ! grep -Fxq "*.pem" ./.gitignore
     echo "*.pem" >> .gitignore
 fi
 
-echo
 echo -e "\e[1;92mReady!\e[0m"
 
 echo -e "\n\e[1;94m**********\nOptional: if you plan on using gulp serve, don't forget to add the container certificate to your local machine. Please visit https://aka.ms/spfx-devcontainer for more information\n**********"
