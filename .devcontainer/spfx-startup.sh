@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
+echo 
 echo -e "\e[1;94mInstalling Node dependencies\e[0m"
 FILE=./package-lock.json
 if test -f "$FILE"; then
+  echo "Using 'npm ci'"
   npm ci
 else
+  echo "Using 'npm install'"
   npm install
 fi
 
