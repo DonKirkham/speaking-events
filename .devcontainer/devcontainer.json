@@ -17,7 +17,7 @@
 	"forwardPorts": [
 		4321,
 		35729
-	],
+	], 
 	// "portsAttributes": {
 	// 	"4321": {
 	// 		"protocol": "https",
