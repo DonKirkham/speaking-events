@@ -38,6 +38,7 @@
 	// 		"requireLocalPort": true
 	// 	}
 	// },
-	"postCreateCommand": "bash .devcontainer/spfx-startup.sh",
+	//"postCreateCommand": "bash .devcontainer/spfx-startup.sh",
+	"postStartCommand": "bash .devcontainer/spfx-startup.sh",
 	"remoteUser": "node"
 }
