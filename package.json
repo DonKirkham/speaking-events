@@ -12,7 +12,7 @@
     "test": "gulp test",
     "deploy": "gulp bundle --ship && gulp package-solution --ship && explorer.exe .",
     "deploy-debug": "gulp bundle && gulp package-solution && explorer.exe .",
-    "serve": "gulp bundle --custom-serve --max_old_space_size=4096 && fast-serve"
+    "serve": "fast-serve"
   },
   "dependencies": {
     "@fluentui/react": "^7.199.1",
