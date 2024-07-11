@@ -35,8 +35,8 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     context
   } = props;
 
-  const [counter, setCounter] = useState<number>(0);
-  const [oddEven, setOddEven] = useState<string>('');
+  // const [counter, setCounter] = useState<number>(0);
+  // const [oddEven, setOddEven] = useState<string>('');
   const [view, setView] = useState<string>('');
   const [events, setEvents] = useState<ISpeakingEvent[]>([]);
   const [myGraphData, setMyGraphData] = useState<any>();
@@ -59,6 +59,7 @@ export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
     setCatData([]);
   }, [view]);
 
+  // HERE'S THE DATA STUFF
   const getEventsREST = async (): Promise<ISpeakingEvent[]> => {
     console.log("getEventsREST() called");
     const _url = "https://pdslabs2.sharepoint.com/_api/web/lists/getbytitle('Speaking%20Events')/items?$select=Id,Title,Session,SessionDate&$filter=SessionDate gt DateTime'2024-04-01T00:00:00'&$orderby=SessionDate%20asc";
