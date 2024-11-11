@@ -13,26 +13,28 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import { IEventRecord } from 'office-ui-fabric-react';
 import * as _ from 'lodash';
+import { ISpeakingEventsWebPartProps } from '../SpeakingEventsWebPart';
 
 //globals
 
 export interface ISpeakingEventsProps {
-  description: string;
   isDarkTheme: boolean;
   environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
-  context: WebPartContext
+  context: WebPartContext;
+  properties: ISpeakingEventsWebPartProps;
+
 }
 
 export const SpeakingEvents: React.FC<ISpeakingEventsProps> = (props) => {
   const {
-    description,
     isDarkTheme,
     environmentMessage,
     hasTeamsContext,
     userDisplayName,
-    context
+    context,
+    properties
   } = props;
 
   const [counter, setCounter] = useState<number>(0);

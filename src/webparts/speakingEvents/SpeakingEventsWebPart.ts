@@ -10,7 +10,8 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'SpeakingEventsWebPartStrings';
-import SpeakingEvents, { ISpeakingEventsProps } from './components/SpeakingEvents';
+import SpeakingEvents from './components/SpeakingEvents';
+import { ISpeakingEventsProps } from './components/SpeakingEvents';
 import { getEventService } from '../../services/getEventService';
 import { IPropertyFieldList, IPropertyFieldSite, PropertyFieldListPicker, PropertyFieldListPickerOrderBy, PropertyFieldSpinButton, PropertyFieldSitePicker } from '@pnp/spfx-property-controls';
 //import { PropertyFieldSitePicker } from '@pnp/spfx-property-controls/lib/PropertyFieldSitePicker';
